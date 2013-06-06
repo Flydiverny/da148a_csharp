@@ -1,1 +1,6 @@
 D:\git\csharp\Assignment1\Part2\bin\Debug\Part2.exe.config
+D:\git\csharp\Assignment1\Part2\bin\Debug\Part2.exe
+D:\git\csharp\Assignment1\Part2\bin\Debug\Part2.pdb
+D:\git\csharp\Assignment1\Part2\obj\Debug\Part2.csprojResolveAssemblyReference.cache
+D:\git\csharp\Assignment1\Part2\obj\Debug\Part2.exe
+D:\git\csharp\Assignment1\Part2\obj\Debug\Part2.pdb

@@ -10,6 +10,15 @@ namespace Part2
     {
         static void Main(string[] args)
         {
+            Console.Title = "Apu's Supermarket";
+
+            // Declare and create an instance of the Product class.
+            var cellphone = new Cellphone();
+
+            cellphone.Start();
+
+            Console.Write("Press Enter to exit! "); // Keep the blinky on the same line 
+            Console.ReadLine();
         }
     }
 }
