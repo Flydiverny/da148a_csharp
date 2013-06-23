@@ -1,37 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GroceryStore.cs" company="Markus Maga">
+// <copyright file="BatteryCalculator.cs" company="Markus Maga">
 //   Markus Maga 2013-06-23
 // </copyright>
 // <summary>
-//   Defines the Product type.
+//   The battery calculator.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Part1
+namespace Part2
 {
     using System;
 
     /// <summary>
-    /// The grocery store.
+    /// Class containing main function for a cellphone battery calculator.
     /// </summary>
-    public class GroceryStore
+    public class BatteryCalculator
     {
         /// <summary>
-        /// Starts program.
+        /// The main.
         /// </summary>
         /// <param name="args">
         /// The args.
         /// </param>
         public static void Main(string[] args)
         {
-            Console.Title = "Apu's Supermarket";
+            Console.Title = "Battery Calculator";
 
-            // Declare and create an instance of the Product class.
-            var product = new Product();
+            // Declare and create an instance of the Cellphone
+            var cellphone = new Cellphone();
+            cellphone.Start();
 
-            product.Start();
-
-            Console.Write("Press Enter to exit! "); // Keep the blinky on the same line 
+            Console.Write("Press Enter to exit! ");
             Console.ReadLine();
         }
     }

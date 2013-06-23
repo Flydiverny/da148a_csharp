@@ -1,105 +1,191 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Product.cs" company="Markus Maga">
+//   Markus Maga 2013-06-23
+// </copyright>
+// <summary>
+//   Defines the Product type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Part1
 {
-    class Product
+    using System;
+    using System.ComponentModel;
+
+    /// <summary>
+    /// The product.
+    /// </summary>
+    public class Product
     {
-        private const double foodVATRate = 0.12, otherVATRate = 0.25;
+        /// <summary>
+        /// Constant vat rates for food and other products.
+        /// </summary>
+        private const double FoodVATRate = 0.12, OtherVATRate = 0.25;
 
-        private String name;
+        /// <summary>
+        /// Name of product.
+        /// </summary>
+        private string name;
+
+        /// <summary>
+        /// Price per unit.
+        /// </summary>
         private double unitPrice;
-        private int count;
-        private Boolean foodItem; // true = Food item, false = other.
 
+        /// <summary>
+        /// Count of product.
+        /// </summary>
+        private int count;
+
+        /// <summary>
+        /// true = Food item, false = other.
+        /// </summary>
+        private bool foodItem;
+
+        /// <summary>
+        /// Total price for x amount of product.
+        /// </summary>
         private double totalPrice;
+
+        /// <summary>
+        /// The total vat.
+        /// </summary>
         private double totalVat;
 
+        /// <summary>
+        /// Program reads input then prints product receipt.
+        /// </summary>
         public void Start()
         {
-            //Read input
-            ReadInput();
+            // Read input
+            this.ReadInput();
 
-            //Calculate total tax
-            CalculateValues();
+            // Calculate total tax
+            this.CalculateValues();
 
-            //Calculate totalNetPrice, total price
-            PrintReceipt();
+            // Calculate totalNetPrice, total price
+            this.PrintReceipt();
         }
 
+        /// <summary>
+        /// Validates user input to see if it can be converted to specified type T.
+        /// </summary>
+        /// <param name="text">
+        /// Text to output before user input.
+        /// </param>
+        /// <typeparam name="T">
+        /// Type to convert input to.
+        /// </typeparam>
+        /// <returns>
+        /// Converted input as type <see cref="T"/>.
+        /// </returns>
+        private static T ValidateInput<T>(string text) where T : struct
+        {
+            Console.Write(text);
+            var returnValue = default(T);
+
+            do
+            {
+                var input = Console.ReadLine();
+                try
+                {
+                    var convertFromString = TypeDescriptor.GetConverter(default(T)).ConvertFromString(input);
+                    if (convertFromString != null)
+                    {
+                        returnValue = (T)convertFromString;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Invalid input, please try again.");
+                    Console.Write(text);
+                }
+            }
+            while (returnValue.Equals(default(T)));
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Reads user inputs.
+        /// </summary>
         private void ReadInput()
         {
-            //1. Read name of the product
-            ReadName();
+            // 1. Read name of the product
+            this.ReadName();
 
-            //2. Read price without VAT
-            ReadNetUnitPrice();
+            // 2. Read price without VAT
+            this.ReadNetUnitPrice();
 
-            //3. Ask the user if the item is a food item
-            ReadIfFoodItem();
+            // 3. Ask the user if the item is a food item
+            this.ReadIfFoodItem();
 
-            //4. Read number of items (quantity)
-            ReadCount();
+            // 4. Read number of items (quantity)
+            this.ReadCount();
         }
 
+        /// <summary>
+        /// Asks user if its a food item or not.
+        /// </summary>
         private void ReadIfFoodItem()
         {
-            Console.Write("Food item (y/n): ");
+            var response = ValidateInput<char>("Food item (y/n): ");
 
-            char response = char.Parse(Console.ReadLine());
-
-            if ((response == 'y') || (response == 'Y'))
-                foodItem = true;
-            else
-                foodItem = false;
+            this.foodItem = (response == 'y') || (response == 'Y');
         }
 
+        /// <summary>
+        /// Asks user for product name.
+        /// </summary>
         private void ReadName()
         {
             Console.Write("Enter the product name: ");
 
-            name = Console.ReadLine();
+            this.name = Console.ReadLine();
         }
 
+        /// <summary>
+        /// Asks user for the net unit price.
+        /// </summary>
         private void ReadNetUnitPrice()
         {
-            Console.Write("Net unit price: ");
-
-            unitPrice = double.Parse(Console.ReadLine());
+            this.unitPrice = ValidateInput<double>("Net unit price: ");
         }
 
+        /// <summary>
+        /// Asks user for the count of product.
+        /// </summary>
         private void ReadCount()
         {
-            Console.Write("Count: ");
-
-            count = int.Parse(Console.ReadLine());
+            this.count = ValidateInput<int>("Count: ");
         }
 
+        /// <summary>
+        /// Calculates the vat and price.
+        /// </summary>
         private void CalculateValues()
         {
-            var price = count*unitPrice;
-            totalVat = price*(foodItem ? foodVATRate : otherVATRate);
-            totalPrice = price + totalVat;
+            var price = this.count * this.unitPrice;
+            this.totalVat = price * (this.foodItem ? FoodVATRate : OtherVATRate);
+            this.totalPrice = price + this.totalVat;
         }
 
-        
-
+        /// <summary>
+        /// Prints the product receipt.
+        /// </summary>
         private void PrintReceipt()
         {
-            var vat = foodItem ? foodVATRate*100 : otherVATRate*100;
+            var vat = this.foodItem ? FoodVATRate * 100 : OtherVATRate * 100;
             Console.WriteLine("\n\n");
             Console.WriteLine("++++++++++++++++ WELCOME TO APU's SUPERMARKET +++++++++++++");
             Console.WriteLine("+++");
-            Console.WriteLine("+++ Name of the product \t\t" + name);
-            Console.WriteLine("+++ Quantity \t\t\t\t" + count);
-            Console.WriteLine("+++ Unit Price \t\t\t\t" + unitPrice);
-            Console.WriteLine("+++ Food item \t\t\t\t" + foodItem);
+            Console.WriteLine("+++ Name of the product \t\t" + this.name);
+            Console.WriteLine("+++ Quantity \t\t\t\t" + this.count);
+            Console.WriteLine("+++ Unit Price \t\t\t\t" + this.unitPrice);
+            Console.WriteLine("+++ Food item \t\t\t\t" + this.foodItem);
             Console.WriteLine("+++");
-            Console.WriteLine("+++ Total amount to pay:  \t\t" + totalPrice);
-            Console.WriteLine("+++ Including VAT at " + vat + " %\t\t" + totalVat);
+            Console.WriteLine("+++ Total amount to pay:  \t\t" + this.totalPrice);
+            Console.WriteLine("+++ Including VAT at " + vat + " %\t\t" + this.totalVat);
             Console.WriteLine("+++");
             Console.WriteLine("+++  This program has been developed by: Markus Maga \t+++");
             Console.WriteLine("++++++++++++++++ PLEASE COME AGAIN! +++++++++++++++++++++++");
@@ -107,3 +193,4 @@ namespace Part1
         }
     }
 }
+
