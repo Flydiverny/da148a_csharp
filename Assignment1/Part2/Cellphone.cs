@@ -53,6 +53,11 @@ namespace Part2
         private double chargedBattery;
 
         /// <summary>
+        /// The battery percentage after charging.
+        /// </summary>
+        private double chargedPercentage;
+
+        /// <summary>
         /// The rate at which the battery will be charged, includes battery decay.
         /// </summary>
         private double chargeRate;
@@ -83,7 +88,7 @@ namespace Part2
         /// </returns>
         private static T ValidateInput<T>(string text) where T : struct
         {
-            Console.Write(text);
+            Console.Write(text + ": ");
             var returnValue = default(T);
 
             do
@@ -127,7 +132,7 @@ namespace Part2
         /// </returns>
         private static int ReadBatteryCapacity()
         {
-            return ValidateInput<int>("Enter battery capacity (mAh)"));
+            return ValidateInput<int>("Enter battery capacity (mAh)");
         }
 
         /// <summary>
@@ -211,6 +216,8 @@ namespace Part2
 
             // If the calculated capacity is greater than the battery capacity we are fully charged.
             this.chargedBattery = capacityCharged > this.batteryCapacity ? this.batteryCapacity : capacityCharged;
+
+            this.chargedPercentage = this.chargedBattery / this.batteryCapacity * 100d;
         }
 
         /// <summary>
@@ -224,7 +231,7 @@ namespace Part2
             Console.WriteLine("USB Charge: " + this.usbCharge);
             Console.WriteLine("Charging time " + this.chargingTime + " minutes");
             Console.WriteLine("Charge rate: " + this.chargeRate + " mAh");
-            Console.WriteLine("Battery status after charge: " + this.chargedBattery);
+            Console.WriteLine("Battery status after charge: " + this.chargedBattery + " mAh " + this.chargedPercentage + " %");
         }
     }
 }
