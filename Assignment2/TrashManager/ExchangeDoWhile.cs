@@ -19,15 +19,27 @@ namespace TrashManager
     public class ExchangeDoWhile : IStartable
     {
         /// <summary>
+        /// The currency name.
+        /// </summary>
+        private string currencyName;
+
+        /// <summary>
+        /// The exchange rate.
+        /// </summary>
+        private decimal exchangeRate;
+
+        private decimal expenses;
+
+        /// <summary>
         /// The start.
         /// </summary>
         public void Start()
         {
             WriteProgramInfo();
-            var sum = this.ReadInputAndSumNumbers();
-            var exchangeRate = this.GetExchangeRate();
+            this.ReadInputAndSumNumbers();
+            this.GetExchangeRate();
 
-            ShowResult(sum, exchangeRate);
+            ShowResult();
         }
 
         /// <summary>
@@ -67,55 +79,39 @@ namespace TrashManager
         /// <summary>
         /// Prints the sum to the console.
         /// </summary>
-        /// <param name="sum">
-        /// Sum to print.
-        /// </param>
-        /// <param name="exchangeRate">
-        /// The exchange Rate.
-        /// </param>
-        private static void ShowResult(decimal sum, decimal exchangeRate)
+        private void ShowResult()
         {
-            var converted = sum * exchangeRate;
+            var converted = this.expenses * this.exchangeRate;
 
             Console.WriteLine("--------------------------------\n");
-            Console.WriteLine("Your expenses\t\t" + sum);
-            Console.WriteLine("Exchange rate\t\t" + exchangeRate);
-            Console.WriteLine("Converted currency\t" + converted);
+            Console.WriteLine("Your expenses\t\t{0:C}", this.expenses);
+            Console.WriteLine("Exchange rate\t\t{0} {1}", this.exchangeRate, this.currencyName);
+            Console.WriteLine("Converted currency\t{0} {1}", converted, this.currencyName);
         }
 
         /// <summary>
         /// Asks the user for an exchange rate.
         /// </summary>
-        /// <returns>
-        /// User specified exchange rate <see cref="decimal"/>.
-        /// </returns>
-        private decimal GetExchangeRate()
+        private void GetExchangeRate()
         {
-            return GetDecimalInput("Please enter the exchange rate");
+            Console.Write("Please enter currency name: ");
+            this.currencyName = Console.ReadLine();
+
+            this.exchangeRate = GetDecimalInput("Please enter the exchange rate");
         }
 
         /// <summary>
         /// The read input and sum numbers.
         /// </summary>
-        /// <returns>
-        /// The <see cref="double"/>.
-        /// </returns>
-        private decimal ReadInputAndSumNumbers()
+        private void ReadInputAndSumNumbers()
         {
-            decimal sum = 0;
+            decimal input;
             do
             {
-                var input = GetDecimalInput("Please enter your expense (number)");
-                sum += input;
-
-                if (input.Equals(0))
-                {
-                    break;
-                }
+                input = GetDecimalInput("Please enter your expense (number)");
+                this.expenses += input;
             }
-            while (true);
-
-            return sum;
+            while (input.Equals(0));
         }
     }
 }

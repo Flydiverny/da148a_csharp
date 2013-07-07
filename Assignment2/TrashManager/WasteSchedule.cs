@@ -55,12 +55,15 @@ namespace TrashManager
         {
             Console.WriteLine("Your bin empties the following weeks:\n\n");
 
+            const int Weeks = 52;
+            const int Columns = 4;
+
             // Amount of repetitions are known, so it would make sense to use a for loop.
-            for (int i = repetition, column = 1; i <= 52; i += repetition, column++)
+            for (int i = repetition, column = 1; i <= Weeks; i += repetition, column++)
             {
                 Console.Write("{0,15} {1,2}", "Week", i);
 
-                if (column == 4)
+                if (column == Columns)
                 {
                     Console.WriteLine();
                     column = 0;
