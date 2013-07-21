@@ -23,15 +23,14 @@ namespace Assignment3
         /// </summary>
         private const int TotalAmountOfSeats = 240;
 
-        /// <summary>
-        /// String format to use when inserting items in reservations list.
-        /// </summary>
-        private const string ListFormat = "{0,5} {1} {2} {3,6}";
+        private const string Reserved = "Reserved", Vacant = "Vacant";
+
+        private const int StatusColumn = 1;
 
         /// <summary>
         /// Counter for the amount of reserved seats.
         /// </summary>
-        private int reservedSeats = 0;
+        private int reservedSeats;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
@@ -53,14 +52,12 @@ namespace Assignment3
             this.lblSeatsTotalNum.Text = TotalAmountOfSeats.ToString();
 
             var columns = new List<string>() { "Seat", "Status", "Name", "Price" };
-            columns.ForEach(name => this.lstReservations.Columns.Add(name));
-
-            for (var i = 1; i <= TotalAmountOfSeats; i++)
+            columns.ForEach(name => this.lstReservations.Columns.Add(name)); // lambda experssion to foreach thru loop and add as columns.
+            
+            // Add vacant items.
+            for (var i = 0; i < TotalAmountOfSeats; i++)
             {
-                var lstItem = this.lstReservations.Items.Add(i.ToString());
-                lstItem.SubItems.Add("Vacant");
-                lstItem.SubItems.Add(string.Empty);
-                lstItem.SubItems.Add(0d.ToString());
+                this.AddListItem(i, false);
             }
 
             this.UpdateGUI();
@@ -129,23 +126,34 @@ namespace Assignment3
         /// </param>
         private void AddToList(bool reserved, string name = "", double price = 0d)
         {
-            string status;
             var index = this.lstReservations.SelectedItems[0].Index;
 
-            if (reserved)
-            {
-                this.reservedSeats++;
-                status = "Reserved";
-            }
-            else
-            {
-                this.reservedSeats--;
-                status = "Vacant";
-            }
-
-            this.lstReservations.Items.RemoveAt(index);
+            this.reservedSeats += reserved ? 1 : -1;
             
-            var lstItem = this.lstReservations.Items.Insert(index, (index+1).ToString());
+            this.lstReservations.Items.RemoveAt(index);
+            this.AddListItem(index, reserved, name, price);
+        }
+
+        /// <summary>
+        /// Adds an item to the list at specified index, will remove the specified index before adding.
+        /// </summary>
+        /// <param name="index">
+        /// Position in list to add item.
+        /// </param>
+        /// <param name="reserved">
+        /// Whether the item is reserved or vacant.
+        /// </param>
+        /// <param name="name">
+        /// Name of person reserving, should be specified if reserved.
+        /// </param>
+        /// <param name="price">
+        /// Price of reservation, should be specified if reserved.
+        /// </param>
+        private void AddListItem(int index, bool reserved, string name = "", double price = 0d)
+        {
+            var status = reserved ? Reserved : Vacant;
+
+            var lstItem = this.lstReservations.Items.Insert(index, (index + 1).ToString());
             lstItem.SubItems.Add(status);
             lstItem.SubItems.Add(name);
             lstItem.SubItems.Add(price.ToString());
@@ -156,7 +164,7 @@ namespace Assignment3
         /// </summary>
         private void CancelReservation()
         {
-            if (this.ValidSeatSelected())
+            if (this.ValidSeatSelected(false))
             {
                 this.AddToList(false);
             }
@@ -219,7 +227,7 @@ namespace Assignment3
             var validName = this.ReadAndValidateName(out name);
             var validPrice = this.ReadAndValidatePrice(out price);
 
-            var validSeat = this.ValidSeatSelected();
+            var validSeat = this.ValidSeatSelected(true);
             
             return validName && validPrice && validSeat;
         }
@@ -227,10 +235,13 @@ namespace Assignment3
         /// <summary>
         /// Confirms whether the user has selected an item in the reservation list.
         /// </summary>
+        /// <param name="reserve">
+        /// If reserve is selected, set to true
+        /// </param>
         /// <returns>
         /// False if no item is selected <see cref="bool"/>.
         /// </returns>
-        private bool ValidSeatSelected()
+        private bool ValidSeatSelected(bool reserve)
         {
             if (this.lstReservations.SelectedItems.Count < 0)
             {
@@ -238,8 +249,23 @@ namespace Assignment3
                 return false;
             }
 
+            var item = this.lstReservations.SelectedItems[0];
 
-            return true;
+            var subItem = item.SubItems[StatusColumn];
+
+            var match = Reserved;
+
+            // we are trying to reserve so match Vacant.
+            if (reserve)
+            {
+                match = Vacant;
+                if (!subItem.Text.Equals(match))
+                {
+                    this.ShowErrorMessage("This seat is already reserved!", "Invalid Seat");
+                }
+            }
+            
+            return subItem.Text.Equals(match);
         }
 
         /// <summary>
