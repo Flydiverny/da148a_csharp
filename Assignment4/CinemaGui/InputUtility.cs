@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InputUtility.cs" company="Markus Maga">
-//   AC7525 Markus Maga 21-07-13
+//   AC7525 Markus Maga 27-07-13
 // </copyright>
 // <summary>
 //   The input utility.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Assignment3
+namespace CinemaGui
 {
     /// <summary>
     /// The input utility.

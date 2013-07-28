@@ -1,4 +1,4 @@
-﻿namespace Assignment3
+﻿namespace CinemaGui
 {
     partial class MainForm
     {
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -44,7 +44,9 @@
             this.lblSeatsReserved = new System.Windows.Forms.Label();
             this.lblSeatsTotal = new System.Windows.Forms.Label();
             this.grpReservations = new System.Windows.Forms.GroupBox();
+            this.cmbSort = new System.Windows.Forms.ComboBox();
             this.lstReservations = new System.Windows.Forms.ListView();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.grpBooking.SuspendLayout();
             this.grpOutput.SuspendLayout();
             this.grpReservations.SuspendLayout();
@@ -203,6 +205,8 @@
             // 
             // grpReservations
             // 
+            this.grpReservations.Controls.Add(this.btnRefresh);
+            this.grpReservations.Controls.Add(this.cmbSort);
             this.grpReservations.Controls.Add(this.lstReservations);
             this.grpReservations.Location = new System.Drawing.Point(337, 12);
             this.grpReservations.Name = "grpReservations";
@@ -211,17 +215,37 @@
             this.grpReservations.TabStop = false;
             this.grpReservations.Text = "Reservations";
             // 
+            // cmbSort
+            // 
+            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSort.FormattingEnabled = true;
+            this.cmbSort.Location = new System.Drawing.Point(191, 20);
+            this.cmbSort.Name = "cmbSort";
+            this.cmbSort.Size = new System.Drawing.Size(121, 21);
+            this.cmbSort.TabIndex = 2;
+            this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.ComboBoxSortSelectedIndexChanged);
+            // 
             // lstReservations
             // 
             this.lstReservations.FullRowSelect = true;
             this.lstReservations.HideSelection = false;
-            this.lstReservations.Location = new System.Drawing.Point(6, 20);
+            this.lstReservations.Location = new System.Drawing.Point(6, 44);
             this.lstReservations.MultiSelect = false;
             this.lstReservations.Name = "lstReservations";
-            this.lstReservations.Size = new System.Drawing.Size(307, 197);
+            this.lstReservations.Size = new System.Drawing.Size(307, 173);
             this.lstReservations.TabIndex = 1;
             this.lstReservations.UseCompatibleStateImageBehavior = false;
             this.lstReservations.View = System.Windows.Forms.View.Details;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(142, 19);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(43, 22);
+            this.btnRefresh.TabIndex = 3;
+            this.btnRefresh.Text = "Upd";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.BtnRefreshClick);
             // 
             // MainForm
             // 
@@ -261,6 +285,8 @@
         private System.Windows.Forms.Label lblSeatsReservedNum;
         private System.Windows.Forms.Label lblSeatsTotalNum;
         private System.Windows.Forms.ListView lstReservations;
+        private System.Windows.Forms.ComboBox cmbSort;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
 
