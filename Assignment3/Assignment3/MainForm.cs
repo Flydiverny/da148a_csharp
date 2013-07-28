@@ -23,8 +23,14 @@ namespace Assignment3
         /// </summary>
         private const int TotalAmountOfSeats = 240;
 
+        /// <summary>
+        /// Words used for Reserved and Vacant in the list.
+        /// </summary>
         private const string Reserved = "Reserved", Vacant = "Vacant";
 
+        /// <summary>
+        /// Index for the status column.
+        /// </summary>
         private const int StatusColumn = 1;
 
         /// <summary>
