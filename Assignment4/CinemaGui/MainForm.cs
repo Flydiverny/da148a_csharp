@@ -20,8 +20,6 @@ namespace CinemaGui
     /// </summary>
     public partial class MainForm : Form
     {
-        private enum Sorting { All, Reserved, Vacant };
-
         /// <summary>
         /// The total amount of seats.
         /// </summary>
@@ -81,12 +79,7 @@ namespace CinemaGui
             }
 
             // Populate drop down.
-            this.cmbSort.Items.Add(Sorting.All);
-            this.cmbSort.Items.Add(Sorting.Reserved);
-            this.cmbSort.Items.Add(Sorting.Vacant);
-
-            // select the first one this will also trigger the select change so all are shown.
-            this.cmbSort.SelectedIndex = 0;
+            this.cmbSort.DataSource = Enum.GetNames(typeof(Sorting));
 
             this.UpdateGUI();
         }
@@ -401,7 +394,15 @@ namespace CinemaGui
         /// </param>
         private void ComboBoxSortSelectedIndexChanged(object sender, EventArgs e)
         {
-            var selection = (Sorting)this.cmbSort.SelectedItem;
+            this.UpdateSelection();
+        }
+
+        /// <summary>
+        /// Updates the filtering selection.
+        /// </summary>
+        private void UpdateSelection()
+        {
+            var selection = (Sorting)this.cmbSort.SelectedIndex;
             this.ShowSeats(selection);
         }
 
@@ -448,8 +449,26 @@ namespace CinemaGui
         /// </param>
         private void BtnRefreshClick(object sender, EventArgs e)
         {
-            var selection = (Sorting)this.cmbSort.SelectedItem;
-            this.ShowSeats(selection);
+            this.UpdateSelection();
+        }
+
+        /// <summary>
+        /// Triggered when reset button is clicked.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void BtnResetClick(object sender, EventArgs e)
+        {
+            if (this.ShowQuestionMessage("Are you sure you want to reset all bookings?", "Confirm Reset") == DialogResult.Yes)
+            {
+                this.seatManager.ResetReservations();
+                this.UpdateSelection(); // so the reset is shown.
+                this.UpdateGUI();
+            }
         }
     }
 }

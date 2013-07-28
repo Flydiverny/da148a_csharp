@@ -44,9 +44,10 @@
             this.lblSeatsReserved = new System.Windows.Forms.Label();
             this.lblSeatsTotal = new System.Windows.Forms.Label();
             this.grpReservations = new System.Windows.Forms.GroupBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.cmbSort = new System.Windows.Forms.ComboBox();
             this.lstReservations = new System.Windows.Forms.ListView();
-            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
             this.grpBooking.SuspendLayout();
             this.grpOutput.SuspendLayout();
             this.grpReservations.SuspendLayout();
@@ -205,6 +206,7 @@
             // 
             // grpReservations
             // 
+            this.grpReservations.Controls.Add(this.btnReset);
             this.grpReservations.Controls.Add(this.btnRefresh);
             this.grpReservations.Controls.Add(this.cmbSort);
             this.grpReservations.Controls.Add(this.lstReservations);
@@ -214,6 +216,16 @@
             this.grpReservations.TabIndex = 2;
             this.grpReservations.TabStop = false;
             this.grpReservations.Text = "Reservations";
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(142, 19);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(43, 22);
+            this.btnRefresh.TabIndex = 3;
+            this.btnRefresh.Text = "Upd";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.BtnRefreshClick);
             // 
             // cmbSort
             // 
@@ -237,15 +249,15 @@
             this.lstReservations.UseCompatibleStateImageBehavior = false;
             this.lstReservations.View = System.Windows.Forms.View.Details;
             // 
-            // btnRefresh
+            // btnReset
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(142, 19);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(43, 22);
-            this.btnRefresh.TabIndex = 3;
-            this.btnRefresh.Text = "Upd";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.BtnRefreshClick);
+            this.btnReset.Location = new System.Drawing.Point(6, 20);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(46, 21);
+            this.btnReset.TabIndex = 4;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.BtnResetClick);
             // 
             // MainForm
             // 
@@ -287,6 +299,7 @@
         private System.Windows.Forms.ListView lstReservations;
         private System.Windows.Forms.ComboBox cmbSort;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 

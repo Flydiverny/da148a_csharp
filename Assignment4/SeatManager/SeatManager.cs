@@ -52,14 +52,7 @@ namespace SeatManager
 
             this.seats = new Seat[seatRows, seatsPerRow];
 
-            for (var row = 0; row < seatRows; row++)
-            {
-                for (var seat = 0; seat < seatsPerRow; seat++)
-                {
-                    // Creates a seat with human readable row and seat numbers.
-                    this.seats[row, seat] = new Seat(row + 1, seat + 1);
-                }
-            }
+            this.PopulateSeats();
         }
 
         /// <summary>
@@ -227,6 +220,14 @@ namespace SeatManager
         }
 
         /// <summary>
+        /// Resets the entire booking.
+        /// </summary>
+        public void ResetReservations()
+        {
+            this.PopulateSeats();
+        }
+
+        /// <summary>
         /// Updates the reservation count.
         /// </summary>
         /// <param name="seat">
@@ -241,6 +242,23 @@ namespace SeatManager
             if (reserve ^ seat.Reserved)
             {
                 this.reservedSeatCount += reserve ? +1 : -1;
+            }
+        }
+
+        /// <summary>
+        /// Fills the seat array with seats.
+        /// </summary>
+        private void PopulateSeats()
+        {
+            this.reservedSeatCount = 0;
+
+            for (var row = 0; row < this.seatRows; row++)
+            {
+                for (var seat = 0; seat < this.seatsPerRow; seat++)
+                {
+                    // Creates a seat with human readable row and seat numbers.
+                    this.seats[row, seat] = new Seat(row + 1, seat + 1);
+                }
             }
         }
 
