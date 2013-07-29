@@ -9,6 +9,7 @@
 
 namespace SeatManager
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -113,44 +114,33 @@ namespace SeatManager
         /// <summary>
         /// Returns a list with all seats.
         /// </summary>
+        /// <param name="filter">
+        /// The filter.
+        /// </param>
         /// <returns>
-        /// List of seats <see cref="List"/>.
+        /// Array of seats <see cref="Seat[]"/>.
         /// </returns>
-        public List<Seat> Seats()
+        public Seat[] GetSeats(Seats filter = Seats.All)
         {
             var list = new List<Seat>();
+
+            var reservedSeats = (filter == Seats.All) || (filter == Seats.Reserved);
+            var vacantSeats = (filter == Seats.All) || (filter == Seats.Vacant);
 
             for (var row = 0; row < this.seats.GetLength(0); row++)
             {
                 for (var seat = 0; seat < this.seats.GetLength(1); seat++)
                 {
-                    list.Add(this.seats[row, seat]);
+                    var s = this.seats[row, seat];
+
+                    if ((reservedSeats && s.Reserved) || (vacantSeats && !s.Reserved))
+                    {
+                        list.Add(s);
+                    }
                 }
             }
 
-            return list;
-        }
-
-        /// <summary>
-        /// Returns a list of free seats.
-        /// </summary>
-        /// <returns>
-        /// List of seats <see cref="List"/>.
-        /// </returns>
-        public List<Seat> VacantSeats()
-        {
-            return this.GetSeats(false);
-        }
-
-        /// <summary>
-        /// Returns a list of reserved seats.
-        /// </summary>
-        /// <returns>
-        /// List of seats <see cref="List"/>.
-        /// </returns>
-        public List<Seat> ReservedSeats()
-        {
-            return this.GetSeats(true);
+            return list.ToArray();
         }
         
         /// <summary>
@@ -261,34 +251,6 @@ namespace SeatManager
                 }
             }
         }
-
-        /// <summary>
-        /// Returns a list of seats.
-        /// </summary>
-        /// <param name="reserved">
-        /// Filtering, only show reserved or vacant seats.
-        /// </param>
-        /// <returns>
-        /// List of seats <see cref="List"/>.
-        /// </returns>
-        private List<Seat> GetSeats(bool reserved)
-        {
-            var list = new List<Seat>();
-
-            for (var row = 0; row < this.seats.GetLength(0); row++)
-            {
-                for (var seat = 0; seat < this.seats.GetLength(1); seat++)
-                {
-                    var resrv = this.seats[row, seat];
-                    if (resrv.Reserved == reserved)
-                    {
-                        list.Add(resrv);
-                    }
-                }
-            }
-
-            return list;
-        } 
     }
 }
 

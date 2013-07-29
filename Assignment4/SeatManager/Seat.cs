@@ -15,31 +15,6 @@ namespace SeatManager
     public class Seat
     {
         /// <summary>
-        /// The row number.
-        /// </summary>
-        private readonly int rowNbr;
-
-        /// <summary>
-        /// The seat number.
-        /// </summary>
-        private readonly int seatNbr;
-
-        /// <summary>
-        /// Whether the seat is reserved or not.
-        /// </summary>
-        private bool reserved = false;
-
-        /// <summary>
-        /// The name.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// The price.
-        /// </summary>
-        private double price;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Seat"/> class.
         /// </summary>
         /// <param name="rowNbr">
@@ -56,9 +31,9 @@ namespace SeatManager
         /// </param>
         public Seat(int rowNbr, int seatNbr, string name, double price) : this(rowNbr, seatNbr)
         {
-            this.reserved = true;
-            this.name = name;
-            this.price = price;
+            this.Reserved = true;
+            this.Name = name;
+            this.Price = price;
         }
 
         /// <summary>
@@ -72,64 +47,34 @@ namespace SeatManager
         /// </param>
         public Seat(int rowNbr, int seatNbr)
         {
-            this.rowNbr = rowNbr;
-            this.seatNbr = seatNbr;
+            this.RowNbr = rowNbr;
+            this.SeatNbr = seatNbr;
         }
 
         /// <summary>
         /// Gets the price.
         /// </summary>
-        public double Price
-        {
-            get
-            {
-                return this.price;
-            }
-        }
+        public double Price { get; private set; }
 
         /// <summary>
         /// Gets the row number.
         /// </summary>
-        public int RowNbr
-        {
-            get
-            {
-                return this.rowNbr;
-            }
-        }
+        public int RowNbr { get; private set; }
 
         /// <summary>
         /// Gets the seat number.
         /// </summary>
-        public int SeatNbr
-        {
-            get
-            {
-                return this.seatNbr;
-            }
-        }
+        public int SeatNbr { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether its reserved.
         /// </summary>
-        public bool Reserved
-        {
-            get
-            {
-                return this.reserved;
-            }
-        }
+        public bool Reserved { get; private set; }
 
         /// <summary>
         /// Gets the name.
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name { get; private set; }
         
         /// <summary>
         /// Reserves the seat.
@@ -142,9 +87,9 @@ namespace SeatManager
         /// </param>
         internal void Reserve(string reservationName, double reservationPrice)
         {
-            this.name = reservationName;
-            this.price = reservationPrice;
-            this.reserved = true;
+            this.Name = reservationName;
+            this.Price = reservationPrice;
+            this.Reserved = true;
         }
 
         /// <summary>
@@ -152,9 +97,9 @@ namespace SeatManager
         /// </summary>
         internal void CancelReservation()
         {
-            this.reserved = false;
-            this.name = string.Empty;
-            this.price = 0;
+            this.Reserved = false;
+            this.Name = string.Empty;
+            this.Price = 0;
         }
     }
 }

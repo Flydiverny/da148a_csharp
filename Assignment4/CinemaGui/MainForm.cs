@@ -21,34 +21,9 @@ namespace CinemaGui
     public partial class MainForm : Form
     {
         /// <summary>
-        /// The total amount of seats.
-        /// </summary>
-        private const int AmountOfRows = 12;
-
-        /// <summary>
-        /// The amount of seats per row.
-        /// </summary>
-        private const int AmountOfSeatsPerRow = 6;
-
-        /// <summary>
-        /// Words used for Reserved and Vacant in the list.
-        /// </summary>
-        private const string Reserved = "Reserved", Vacant = "Vacant";
-
-        /// <summary>
-        /// Price shown when there's no reservation.
-        /// </summary>
-        private const double VacantPrice = 0;
-
-        /// <summary>
-        /// Columns used by the list view.
-        /// </summary>
-        private readonly string[] columns = new[] { "Row", "Seat", "Status", "Name", "Price" };
-
-        /// <summary>
         /// The seat manager.
         /// </summary>
-        private SeatManager seatManager;
+        private SeatPresenter seatPresenter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
@@ -67,19 +42,16 @@ namespace CinemaGui
         /// </summary>
         private void InitializeGUI()
         {
-            this.seatManager = new SeatManager(AmountOfRows, AmountOfSeatsPerRow);
+            this.seatPresenter = new SeatPresenter();
 
             // Set the label with amount of seats.
-            this.lblSeatsTotalNum.Text = this.seatManager.TotalSeatCount.ToString();
+            this.lblSeatsTotalNum.Text = this.seatPresenter.SeatManager.TotalSeatCount.ToString();
 
             // Add columns to list.
-            foreach (var column in this.columns)
-            {
-                this.lstReservations.Columns.Add(column);
-            }
+            this.lstReservations.Columns.AddRange(this.seatPresenter.ColumnHeaders);
 
             // Populate drop down.
-            this.cmbSort.DataSource = Enum.GetNames(typeof(Sorting));
+            this.cmbSort.DataSource = Enum.GetNames(typeof(Seats));
 
             this.UpdateGUI();
         }
@@ -89,39 +61,10 @@ namespace CinemaGui
         /// </summary>
         private void UpdateGUI()
         {
-            this.lblSeatsReservedNum.Text = this.seatManager.ReservedSeatCount.ToString();
-            this.lblSeatsVacantNum.Text = this.seatManager.FreeSeatCount.ToString();
+            this.lblSeatsReservedNum.Text = this.seatPresenter.SeatManager.ReservedSeatCount.ToString();
+            this.lblSeatsVacantNum.Text = this.seatPresenter.SeatManager.FreeSeatCount.ToString();
         }
-
-        /// <summary>
-        /// Populates a list item with reservation data.
-        /// </summary>
-        /// <param name="lstItem">
-        /// The list item.
-        /// </param>
-        /// <param name="seat">
-        /// The seat.
-        /// </param>
-        private void PopulateListItem(ListViewItem lstItem, Seat seat)
-        {
-            // Populate other columns
-            lstItem.SubItems.Add(seat.SeatNbr.ToString()); // Seat +1 for human readable.
-            lstItem.Tag = seat;
-
-            if (!seat.Reserved)
-            {
-                lstItem.SubItems.Add(Vacant);
-                lstItem.SubItems.Add(string.Empty);
-                lstItem.SubItems.Add(VacantPrice.ToString());
-
-                return;
-            }
-
-            lstItem.SubItems.Add(Reserved);
-            lstItem.SubItems.Add(seat.Name);
-            lstItem.SubItems.Add(seat.Price.ToString());
-        }
-
+        
         /// <summary>
         /// Replaces a reservation in the list at given index.
         /// </summary>
@@ -134,7 +77,7 @@ namespace CinemaGui
         private void UpdateReservation(int index, Seat seat)
         {
             this.lstReservations.Items.RemoveAt(index);
-            this.PopulateListItem(this.lstReservations.Items.Insert(index, seat.RowNbr.ToString()), seat); // Row +1 for human readable.
+            this.lstReservations.Items.Insert(index, this.seatPresenter.CreateListItem(seat));
         }
 
         /// <summary>
@@ -192,7 +135,7 @@ namespace CinemaGui
 
             if (this.ShowQuestionMessage("Are you sure you want to cancel this reservation?", "Cancel Reservation") == DialogResult.Yes)
             {
-                this.seatManager.CancelReservation(seat);
+                this.seatPresenter.SeatManager.CancelReservation(seat);
             }
         }
 
@@ -221,7 +164,7 @@ namespace CinemaGui
                 }
             }
 
-            this.seatManager.NewReservation(seat, name, price);
+            this.seatPresenter.SeatManager.NewReservation(seat, name, price);
         }
 
         /// <summary>
@@ -242,7 +185,7 @@ namespace CinemaGui
             }
 
             int selectedIndex;
-            var seat = this.GetSelectedSeatIndexes(out selectedIndex);
+            var seat = this.GetSelectedSeat(out selectedIndex);
 
             // Perform action depending on what radio button is selected.
             if (this.rdoCancel.Checked)
@@ -290,10 +233,9 @@ namespace CinemaGui
         /// <returns>
         /// Selected Seat <see cref="bool"/>.
         /// </returns>
-        private Seat GetSelectedSeatIndexes(out int selectedIndex)
+        private Seat GetSelectedSeat(out int selectedIndex)
         {
-
-            var item = this.lstReservations.SelectedItems[0];
+            var item = this.lstReservations.SelectedItems[0]; // other code prevents us from selecting more or less.
             selectedIndex = item.Index;
             
             return item.Tag as Seat;
@@ -402,7 +344,7 @@ namespace CinemaGui
         /// </summary>
         private void UpdateSelection()
         {
-            var selection = (Sorting)this.cmbSort.SelectedIndex;
+            var selection = (Seats)this.cmbSort.SelectedIndex;
             this.ShowSeats(selection);
         }
 
@@ -412,30 +354,10 @@ namespace CinemaGui
         /// <param name="filter">
         /// The filter.
         /// </param>
-        private void ShowSeats(Sorting filter)
+        private void ShowSeats(Seats filter)
         {
-            List<Seat> seats;
-            switch (filter)
-            {
-                case Sorting.Reserved:
-                    seats = this.seatManager.ReservedSeats();
-                    break;
-                case Sorting.Vacant:
-                    seats = this.seatManager.VacantSeats();
-                    break;
-
-                case Sorting.All:
-                default:
-                    seats = this.seatManager.Seats();
-                    break;
-            }
-
             this.lstReservations.Items.Clear();
-
-            foreach (var seat in seats)
-            {
-                this.PopulateListItem(this.lstReservations.Items.Add(seat.RowNbr.ToString()), seat);
-            }
+            this.lstReservations.Items.AddRange(this.seatPresenter.GetSeats(filter));
         }
 
         /// <summary>
@@ -465,7 +387,7 @@ namespace CinemaGui
         {
             if (this.ShowQuestionMessage("Are you sure you want to reset all bookings?", "Confirm Reset") == DialogResult.Yes)
             {
-                this.seatManager.ResetReservations();
+                this.seatPresenter.SeatManager.ResetReservations();
                 this.UpdateSelection(); // so the reset is shown.
                 this.UpdateGUI();
             }

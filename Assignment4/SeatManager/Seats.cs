@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Sorting.cs" company="Markus Maga">
+// <copyright file="Seats.cs" company="Markus Maga">
 //   AC7525 Markus Maga 27-07-13
 // </copyright>
 // <summary>
@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace CinemaGui
+namespace SeatManager
 {
     /// <summary>
     /// The sorting.
     /// </summary>
-    public enum Sorting
+    public enum Seats
     {
         /// <summary>
         /// Should show all.
