@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SeatManager.cs" company="Markus Maga">
-//   AC7525 Markus Maga 27-07-13
+//   AC7525 Markus Maga 29-07-13
 // </copyright>
 // <summary>
 //   The seat manager.

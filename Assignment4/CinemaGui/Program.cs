@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Program.cs" company="Markus Maga">
-//   AC7525 Markus Maga 27-07-13
+//   AC7525 Markus Maga 29-07-13
 // </copyright>
 // <summary>
 //   The program startes the WinForm application.
@@ -9,7 +9,6 @@
 namespace CinemaGui
 {
     using System;
-    using System.Windows.Forms;
 
     /// <summary>
     /// The program.
@@ -22,9 +21,7 @@ namespace CinemaGui
         [STAThread]
         public static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            new CinemaSystem().Run();
         }
     }
 }

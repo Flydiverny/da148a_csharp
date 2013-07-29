@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SeatPresenter.cs" company="Markus Maga">
-//   Markus Maga
+//   AC7525 Markus Maga 29-07-13
 // </copyright>
 // <summary>
 //   Defines the SeatPresenter type.
@@ -24,16 +24,6 @@ namespace CinemaGui
         public static readonly string[] Columns = new[] { "Row", "Seat", "Status", "Name", "Price" };
 
         /// <summary>
-        /// The total amount of seats.
-        /// </summary>
-        private const int AmountOfRows = 12;
-
-        /// <summary>
-        /// The amount of seats per row.
-        /// </summary>
-        private const int AmountOfSeatsPerRow = 6;
-
-        /// <summary>
         /// Words used for Reserved and Vacant in the list.
         /// </summary>
         private const string Reserved = "Reserved", Vacant = "Vacant";
@@ -42,10 +32,25 @@ namespace CinemaGui
         /// Initializes a new instance of the <see cref="SeatPresenter"/> class. 
         /// Wraps a seat manager and can be used to create list view items and other presentational data.
         /// </summary>
-        public SeatPresenter()
+        /// <param name="amountOfRows">
+        /// The amount of rows.
+        /// </param>
+        /// <param name="amountOfSeatsPerRow">
+        /// The amount of seats per row.
+        /// </param>
+        public SeatPresenter(int amountOfRows, int amountOfSeatsPerRow) : this(new SeatManager(amountOfRows, amountOfSeatsPerRow))
         {
-            this.SeatManager = new SeatManager(AmountOfRows, AmountOfSeatsPerRow);
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeatPresenter"/> class.
+        /// </summary>
+        /// <param name="seatManager">
+        /// The seat manager.
+        /// </param>
+        public SeatPresenter(SeatManager seatManager)
+        {
+            this.SeatManager = seatManager;
             this.SetupColumnHeaders();
         }
 

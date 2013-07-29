@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainForm.cs" company="Markus Maga">
-//   AC7525 Markus Maga 27-07-13
+//   AC7525 Markus Maga 29-07-13
 // </copyright>
 // <summary>
 //   Handles user interactions.
@@ -21,15 +21,20 @@ namespace CinemaGui
     public partial class MainForm : Form
     {
         /// <summary>
-        /// The seat manager.
+        /// The seat presenter.
         /// </summary>
-        private SeatPresenter seatPresenter;
+        private readonly SeatPresenter seatPresenter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
         /// </summary>
-        public MainForm()
+        /// <param name="seatPresenter">
+        /// The seat presenter.
+        /// </param>
+        public MainForm(SeatPresenter seatPresenter)
         {
+            this.seatPresenter = seatPresenter;
+
             // This call is required by the designer.
             this.InitializeComponent();
 
@@ -42,8 +47,6 @@ namespace CinemaGui
         /// </summary>
         private void InitializeGUI()
         {
-            this.seatPresenter = new SeatPresenter();
-
             // Set the label with amount of seats.
             this.lblSeatsTotalNum.Text = this.seatPresenter.SeatManager.TotalSeatCount.ToString();
 

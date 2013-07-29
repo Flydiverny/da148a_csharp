@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CinemaSystem.cs" />
     <Compile Include="InputUtility.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
