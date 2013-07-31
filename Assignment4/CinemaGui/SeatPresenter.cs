@@ -16,7 +16,7 @@ namespace CinemaGui
     /// <summary>
     /// The seat presenter.
     /// </summary>
-    public class SeatPresenter
+    public class SeatPresenter : SeatManager
     {
         /// <summary>
         /// Columns used by the list view.
@@ -38,26 +38,10 @@ namespace CinemaGui
         /// <param name="amountOfSeatsPerRow">
         /// The amount of seats per row.
         /// </param>
-        public SeatPresenter(int amountOfRows, int amountOfSeatsPerRow) : this(new SeatManager(amountOfRows, amountOfSeatsPerRow))
+        public SeatPresenter(int amountOfRows, int amountOfSeatsPerRow) : base(amountOfRows, amountOfSeatsPerRow)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SeatPresenter"/> class.
-        /// </summary>
-        /// <param name="seatManager">
-        /// The seat manager.
-        /// </param>
-        public SeatPresenter(SeatManager seatManager)
-        {
-            this.SeatManager = seatManager;
             this.SetupColumnHeaders();
         }
-
-        /// <summary>
-        /// Gets the seat manager.
-        /// </summary>
-        public SeatManager SeatManager { get; private set; }
 
         /// <summary>
         /// Gets the column headers.
@@ -87,9 +71,9 @@ namespace CinemaGui
         /// <returns>
         /// List view items <see cref="ListViewItem[]"/>.
         /// </returns>
-        public ListViewItem[] GetSeats(Seats filter)
+        public new ListViewItem[] GetSeats(Seats filter)
         {
-            var seats = SeatManager.GetSeats(filter);
+            var seats = base.GetSeats(filter);
 
             var listViewItems = new ListViewItem[seats.Length];
 

@@ -11,6 +11,7 @@ namespace SeatManager
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The seat manager.
@@ -142,6 +143,26 @@ namespace SeatManager
 
             return list.ToArray();
         }
+
+        /// <summary>
+        /// Adds a reservation, at a given row and seat. 
+        /// </summary>
+        /// <param name="row">
+        /// The row.
+        /// </param>
+        /// <param name="seat">
+        /// The seat.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="price">
+        /// The price.
+        /// </param>
+        public void NewReservation(int row, int seat, string name, double price)
+        {
+            this.NewReservation(this.seats[row, seat], name, price);
+        }
         
         /// <summary>
         /// Adds a reservation, at a given row and seat. 
@@ -157,9 +178,28 @@ namespace SeatManager
         /// </param>
         public void NewReservation(Seat seat, string name, double price)
         {
+            if (!this.seats[seat.RowNbr - 1, seat.SeatNbr - 1].Equals(seat))
+            {
+                throw new ArgumentException("Uhm.. where did this seat come from again? It's certainly not from this seat manager!");
+            }
+
             this.UpdateReservationCount(seat, true);
 
             seat.Reserve(name, price);
+        }
+
+        /// <summary>
+        /// Cancels a reservation.
+        /// </summary>
+        /// <param name="row">
+        /// The row.
+        /// </param>
+        /// <param name="seat">
+        /// The seat.
+        /// </param>
+        public void CancelReservation(int row, int seat)
+        {
+            this.CancelReservation(this.seats[row, seat]);
         }
 
         /// <summary>
@@ -170,6 +210,11 @@ namespace SeatManager
         /// </param>
         public void CancelReservation(Seat seat)
         {
+            if (!this.seats[seat.RowNbr - 1, seat.SeatNbr - 1].Equals(seat))
+            {
+                throw new ArgumentException("Uhm.. where did this seat come from again? It's certainly not from this seat manager!");
+            }
+
             this.UpdateReservationCount(seat, false);
 
             seat.CancelReservation();

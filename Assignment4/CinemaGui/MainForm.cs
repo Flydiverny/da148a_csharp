@@ -48,7 +48,7 @@ namespace CinemaGui
         private void InitializeGUI()
         {
             // Set the label with amount of seats.
-            this.lblSeatsTotalNum.Text = this.seatPresenter.SeatManager.TotalSeatCount.ToString();
+            this.lblSeatsTotalNum.Text = this.seatPresenter.TotalSeatCount.ToString();
 
             // Add columns to list.
             this.lstReservations.Columns.AddRange(this.seatPresenter.ColumnHeaders);
@@ -64,8 +64,8 @@ namespace CinemaGui
         /// </summary>
         private void UpdateGUI()
         {
-            this.lblSeatsReservedNum.Text = this.seatPresenter.SeatManager.ReservedSeatCount.ToString();
-            this.lblSeatsVacantNum.Text = this.seatPresenter.SeatManager.FreeSeatCount.ToString();
+            this.lblSeatsReservedNum.Text = this.seatPresenter.ReservedSeatCount.ToString();
+            this.lblSeatsVacantNum.Text = this.seatPresenter.FreeSeatCount.ToString();
         }
         
         /// <summary>
@@ -138,7 +138,7 @@ namespace CinemaGui
 
             if (this.ShowQuestionMessage("Are you sure you want to cancel this reservation?", "Cancel Reservation") == DialogResult.Yes)
             {
-                this.seatPresenter.SeatManager.CancelReservation(seat);
+                this.seatPresenter.CancelReservation(seat);
             }
         }
 
@@ -167,7 +167,7 @@ namespace CinemaGui
                 }
             }
 
-            this.seatPresenter.SeatManager.NewReservation(seat, name, price);
+            this.seatPresenter.NewReservation(seat, name, price);
         }
 
         /// <summary>
@@ -390,7 +390,7 @@ namespace CinemaGui
         {
             if (this.ShowQuestionMessage("Are you sure you want to reset all bookings?", "Confirm Reset") == DialogResult.Yes)
             {
-                this.seatPresenter.SeatManager.ResetReservations();
+                this.seatPresenter.ResetReservations();
                 this.UpdateSelection(); // so the reset is shown.
                 this.UpdateGUI();
             }
