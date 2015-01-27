@@ -94,7 +94,7 @@ namespace CinemaGui
 
             for (var i = 0; i < Columns.Length; i++)
             {
-                this.ColumnHeaders[i] = new ColumnHeader(Columns[i]);
+                this.ColumnHeaders[i] = new ColumnHeader() { Text = Columns[i] };
             }
         }
 
